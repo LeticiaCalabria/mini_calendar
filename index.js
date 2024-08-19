@@ -17,5 +17,38 @@ dayNumEl.innerText = date.getDate();
 
 yearEl.innerText = date.getFullYear();
 
-console.log("Day Number:", date.getDate());
-console.log("Year:", date.getFullYear());
+
+const btnEl = document.querySelector(".btn");
+
+btnEl.addEventListener("mouseover", (event)=>{
+    const x = (event.pageX - btnEl.offsetLeft);
+    const y = (event.pageY - btnEl.offsetTop);
+
+    btnEl.style.setProperty("--xPos", x + "px");
+    btnEl.style.setProperty("--yPos", y + "px")
+});
+
+const inputEl = document.querySelector((".input"));
+const bodyEl = document.querySelector("body");
+
+inputEl.checked = JSON.parse(localStorage.getItem("mode"));
+updateBody();
+
+function updateBody(){
+    if(inputEl.checked){
+        bodyEl.style.background = "black";
+        monthNameEl.style.background = "gray";
+    }else{
+        bodyEl.style.background = "slateblue";
+        monthNameEl.style.background = "orangered";
+    }
+};
+
+inputEl.addEventListener("input", ()=>{
+    updateBody(); 
+    updateLocalStorage();
+});
+
+function updateLocalStorage(){
+    localStorage.setItem("mode", JSON.stringify(inputEl.checked));
+};

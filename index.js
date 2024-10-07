@@ -28,19 +28,27 @@ btnEl.addEventListener("mouseover", (event)=>{
     btnEl.style.setProperty("--yPos", y + "px")
 });
 
-const inputEl = document.querySelector((".input"));
-const bodyEl = document.querySelector("body");
+btnEl.addEventListener("click", ()=>{
+    location.reload();
+})
 
-inputEl.checked = JSON.parse(localStorage.getItem("mode"));
+const inputEl = document.querySelector(".input");
+const bodyEl = document.querySelector("body");
+const barEl = document.querySelector(".loading-bar-front");
+
+inputEl.checked = JSON.parse(localStorage.getItem("mode")) || false;
+
 updateBody();
 
 function updateBody(){
     if(inputEl.checked){
         bodyEl.style.background = "black";
         monthNameEl.style.background = "gray";
+        barEl.style.background = "white";
     }else{
         bodyEl.style.background = "slateblue";
         monthNameEl.style.background = "orangered";
+        barEl.style.background = "orangered";
     }
 };
 
@@ -52,3 +60,26 @@ inputEl.addEventListener("input", ()=>{
 function updateLocalStorage(){
     localStorage.setItem("mode", JSON.stringify(inputEl.checked));
 };
+
+const counterEl = document.querySelector(".counter");
+
+let idx = 0;
+
+function resetCounter(){
+    idx = 0;
+    updateNum();
+}
+
+
+function updateNum(){
+    counterEl.innerText = idx + "%"
+    barEl.style.width = idx + "%"
+    idx++
+    if(idx < 101){
+        setTimeout(updateNum, 20);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", ()=>{
+    resetCounter();
+});
